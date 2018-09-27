@@ -1,13 +1,13 @@
-# SwiftyCoreData
+# CoreDataBC
 
 
 
-# Manual Install
+### Manual Install
 Download the repository and drag to your project files
 
 
 
-# Installation with Cocoapods
+### Installation with Cocoapods
 Installing SwiftyCoreData is as simple as
 ```
 pod 'CoreDataBC'
