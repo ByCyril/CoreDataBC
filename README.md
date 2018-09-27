@@ -1,89 +1,86 @@
-
 # CoreDataBC
 
-A high level framework to make CoreData implementations quicker and easier.
-
-## Installation
-
-You will need the latest version of Xcode and ideally CocoaPods.
 
 
-### CocoaPods
+### Manual Install
+Download the repository and drag to your project files
 
-What things you need to install the software and how to install them
 
+
+### Installation with Cocoapods
+Installing SwiftyCoreData is as simple as
 ```
-Give examples
+pod 'CoreDataBC'
 ```
 
-### Installing
 
-A step by step series of examples that tell you how to get a development env running
+### Initializing
+1) Import the `CoreDataBC` module
 
-Say what the step will be
+2) Create an instance of the CoreDataBC Module
+    `private let coreData = CoreDataBC(entity: "<Entity Name>", xcDataModelID: "<Name of your xcDataModelID>")`
 
-```
-Give the example
-```
 
-And repeat
+### Saving Data - Single Entry
+To save one entry, create a dictionary of the items you want to save. In this case, I am trying to add my contact info.
 
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
+```swift
+private let record = ["name": "Cyril Garcia", "email": "garciacy@bycyril.com"]
 ```
 
-### And coding style tests
+Call the pushSingleValue() method 
 
-Explain what these tests test and why
-
-```
-Give an example
+```swift
+self.coreData.pushSingleValue(record)
 ```
 
-## Deployment
+### Saving Data - Multiple Entries
+Create a few dictionaries of values
 
-Add additional notes about how to deploy this on a live system
+```swift
+private let  recordOne = ["name": "Cyril", "email": "garciacy@bycyril.com"]
+private let  recordTwo = ["name": "Kobe", "email": "kobe@gmail.com"]
+private let  recordThree = ["name": "Micheal", "email": "micheal@gmail.com"]
+```
 
-## Built With
+Call the pushMultipleValues() method
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+```swift
+self.coreData.pushMultipleValues([recordOne, recordTwo, recordThree])
+```
 
-## Contributing
+### Retrieve Records
+Retrieving records is failry simple with CoreDataBC. All you do is call the retrieveData() method. There are three ways you can retrieve records, either by sorted, filtered, or all.
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+```swift
+self.coreData.retrieveData()
+```
 
-## Versioning
+To access the items you've retrieved, call the ```getData()``` function which returns an array of an NSManagedObject.
+```swift
+self.coreData.getData()
+```
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+### Update an existing record
+To update an existing record, call the ```update()``` method. It has three parameters. `key`, `value`, and `newValue`.
+The `key` is the attribute name of the value you want to change. 
+The `value` is the existing value that is in place
+The `newValue` is the new value you want to replace
 
-## Authors
+### Delete a Record
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+Since the data you have is given as an array of an NSManagedObject, you can remove a record by its index or by the object itself. Just call the ```remove()``` function.
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+Remove by index
+```swift
+self.coreData.remove(0)
+```
 
-## License
+Remove by NSManagedObject
+```swift
+let objectToRemove = self.coreData.getData()[0]
+self.coreData.remove(objectToRemove)
+```
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
