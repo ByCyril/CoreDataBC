@@ -12,6 +12,7 @@ import CoreData
 public class CoreDataBC: Module {
     
     private var entity: String!
+    public typealias CompletionHandler = (_ error: Error?) -> Void
     
     
     /// Initialize One CoreData Entity
@@ -19,7 +20,7 @@ public class CoreDataBC: Module {
     /// - Parameters:
     ///   - entity: The name of your entity you want to access
     ///   - xcDataModelID: The XCDataModelID file name without the extension
-    public init(entity: String, xcDataModelID: String) {
+    public init(_ entity: String, _ xcDataModelID: String) {
         super.init(xcDataModelID: xcDataModelID)
         self.entity = entity
     }
@@ -28,9 +29,9 @@ public class CoreDataBC: Module {
     ///
     /// - Parameter item: A dictionary of type [String: Any]
     public func pushSingleValue<Values>(_ item: [String: Values]) {
-        let managedContext = managedObjectContext
-        let entity = NSEntityDescription.entity(forEntityName: self.entity!, in: managedContext)
-        let coreData = NSManagedObject(entity: entity!, insertInto: managedContext)
+        
+        let entity = NSEntityDescription.entity(forEntityName: self.entity!, in: self.managedObjectContext)
+        let coreData = NSManagedObject(entity: entity!, insertInto: self.managedObjectContext)
         
         for i in item {
             let key = i.key
@@ -39,7 +40,7 @@ public class CoreDataBC: Module {
         }
         
         do {
-            try managedContext.save()
+            try self.managedObjectContext.save()
             self.retrieveData()
         } catch {
             print(error.localizedDescription)
@@ -59,11 +60,11 @@ public class CoreDataBC: Module {
     
     /// Generically retrieve all records from your entity.
     public func retrieveData() {
-        let managedContext = managedObjectContext
+        
         let fetchrequest = NSFetchRequest<NSFetchRequestResult>(entityName: self.entity!)
         
         do {
-            let data = try managedContext.fetch(fetchrequest) as? [NSManagedObject]
+            let data = try self.managedObjectContext.fetch(fetchrequest) as? [NSManagedObject]
             self.setData(data!)
         } catch {
             print(error.localizedDescription)
@@ -77,7 +78,7 @@ public class CoreDataBC: Module {
     ///   - byKey: The key you want to sort by
     ///   - ascending: Set to ascending or descending
     public func retrieveAndSort(_ byKey: String, _ ascending: Bool) {
-        let managedContext = managedObjectContext
+        
         let fetchrequest = NSFetchRequest<NSFetchRequestResult>(entityName: self.entity!)
         
         let sectionSortDescriptor = NSSortDescriptor(key: byKey, ascending: ascending)
@@ -85,7 +86,7 @@ public class CoreDataBC: Module {
         fetchrequest.sortDescriptors = sortDescriptor
         
         do {
-            let data = try managedContext.fetch(fetchrequest) as? [NSManagedObject]
+            let data = try self.managedObjectContext.fetch(fetchrequest) as? [NSManagedObject]
             self.setData(data!)
         } catch {
             print(error.localizedDescription)
@@ -98,9 +99,9 @@ public class CoreDataBC: Module {
     /// - Parameters:
     ///   - value: The value you want to filter by
     ///   - withKey: The key where the value lives in
-    public func retriveAndFilterBy<T>(value: T, withKey: String) {
+    public func retriveAndFilterBy<Values>(_ value: Values, _ withKey: String) {
         
-        let managedContext = managedObjectContext
+        
         let fetchrequest = NSFetchRequest<NSFetchRequestResult>(entityName: self.entity!)
         
         var predicate: NSPredicate!
@@ -120,45 +121,41 @@ public class CoreDataBC: Module {
         fetchrequest.predicate = predicate
         
         do {
-            let results = try managedContext.fetch(fetchrequest) as? [NSManagedObject]
+            let results = try self.managedObjectContext.fetch(fetchrequest) as? [NSManagedObject]
             self.setData(results!)
         } catch {
             print(error.localizedDescription)
         }
     }
     
-    /// Updating an existing object
+    
+    /// Update an existing record
     ///
     /// - Parameters:
-    ///   - key: The key of the saved object you want to save
-    ///   - value: The existing value of that object
-    ///   - newValue: The new value you want to replace
-    public func update(_ key: String, _ value: String, _ newValue: String) {
-        let managedContext = managedObjectContext
-        let predicate = NSPredicate(format: key + " == %@", value)
+    ///   - object: A reference of the record you want to update
+    ///   - newValues: Values to replace with
+    public func update(_ referenceObject: NSManagedObject, newValues: [String: Any]) {
         
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: self.entity!)
-        fetchRequest.predicate = predicate
-        
-        do {
-            let entities = try managedContext.fetch(fetchRequest) as! [NSManagedObject]
-            entities.first!.setValue(newValue, forKey: key)
-        } catch {
-            print(error.localizedDescription)
+        for value in newValues {
+            let key = value.key
+            let val = value.value
+            referenceObject.setValue(val, forKey: key)
         }
         
+        
         do {
-            try managedContext.save()
+            try self.managedObjectContext.save()
             self.retrieveData()
+            
         } catch {
-            print(error.localizedDescription)
+            
         }
     }
     
     /// Remove a specific record by index
     ///
     /// - Parameter index: The index of the record
-    public func remove(_ index: Int) {
+    public func delete(_ index: Int) {
         let managedContext = managedObjectContext
         managedContext.delete(self.getData()[index])
         self.removeAt(index)
@@ -173,7 +170,7 @@ public class CoreDataBC: Module {
     /// Remove a specific record by object
     ///
     /// - Parameter object: The object to be removed as an NSManagedObject
-    public func remove(_ object: NSManagedObject) {
+    public func delete(_ object: NSManagedObject) {
         let managedContext = self.managedObjectContext
         managedContext.delete(object)
         
@@ -187,7 +184,7 @@ public class CoreDataBC: Module {
     
     
     /// Remove all records
-    public func removeAll() {
+    public func deleteAll() {
         let managedContext = managedObjectContext
         
         for object in self.getData() {
@@ -203,8 +200,8 @@ public class CoreDataBC: Module {
         }
     }
     
-   
-   
+    
+    
 }
 
 
