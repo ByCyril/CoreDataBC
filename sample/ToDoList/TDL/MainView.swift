@@ -23,6 +23,7 @@ class MainView: UIView, UITableViewDelegate, UITableViewDataSource {
         self.vc = vc
         self.tableViewSetup()
         self.addAction()
+        self.removeAllAction()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -53,6 +54,7 @@ class MainView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     private func removeAllAction() {
         let deleteAll = UIBarButtonItem(title: "Delete All", style: .done, target: self.vc, action: #selector(self.vc.removeAllTasks))
+        self.vc.navigationItem.leftBarButtonItem = deleteAll
     }
     
     public func reloadTableView() {

@@ -20,7 +20,7 @@ class MainController: UIViewController {
         
 //        The Entity name is List
 //        The XCDataModelID is TDL
-        self.coreData = CoreDataBC("List", "TDL")
+        self.coreData = CoreDataBC("Tasks", "TDL")
         
 //        Retrieve the data
         self.coreData.retrieveData()
@@ -55,11 +55,13 @@ class MainController: UIViewController {
 //    Deleting specific task
     @objc func deleteTask(_ task: NSManagedObject) {
         self.coreData.delete(task)
+        
     }
     
 //    Removes all records
     @objc func removeAllTasks() {
         self.coreData.deleteAll()
+        self.mainView.reloadTableView()
     }
     
 //    Updating status to done
