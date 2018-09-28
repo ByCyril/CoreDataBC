@@ -1,13 +1,36 @@
 # CoreDataBC
 
+## Overview
+CoreDataBC is a high level framework that is built on top of CoreData. It's purpose is to make it easy for developers to interact with their Data Models.
+
+This is what the simplicity of the framework looks like
+
+#### Initialize
+`let coreData = CoreDataBC("<Entity Name>", "<XCDataModelID>")`
+#### Save Data
+`self.coreData.pushSingleValue(["<Attribute>": <Value to save>])`
+#### Retrieve Data
+`self.coreData.retrieveData()`
+#### Update Existing Data
+`self.coreData.update(dataToUpdate, ["<attribute>": "<new value>"])` 
+
+`datatoUpdate` is a reference variable (of type `NSManagedObject`) of the object you want to update. The following parameter is a dictionary of the values you are trying to update with.
+
+#### Delete Data
+`self.coreData.delete(<dataToDelete>)` 
+
+`dataToDelete` is a variable that is of type `NSManagedObject`
+
+#### Accessing the data
+`let data = self.coreData.getData()` which returns an array of `[NSManagedObject]`. To access the values from an `NSManagedObject`, use the `value(forKey:_ )` function.
 
 
-### Manual Install
+## Manual Install
 Download the repository and drag to your project files
 
 
 
-### Installation with Cocoapods
+## Installation with Cocoapods
 Installing SwiftyCoreData is as simple as
 ```
 pod 'CoreDataBC'
@@ -62,24 +85,27 @@ self.coreData.getData()
 ```
 
 ### Update an existing record
-To update an existing record, call the ```update()``` method. It has three parameters. `key`, `value`, and `newValue`.
-The `key` is the attribute name of the value you want to change. 
-The `value` is the existing value that is in place
-The `newValue` is the new value you want to replace
+To update an existing record, call the ```update()``` method. It has two parameters. `ReferenceObject`, `NewValue`.
+The `ReferenceObject` is of type `NSManagedObject` and it is a reference to the record you want to update.
+The `NewValue` is a dictionary of the new value you want to update with.
+
+```swift
+self.coreData.update(recordToUpdate, ["name": "Cy"])
+```
 
 ### Delete a Record
 
-Since the data you have is given as an array of an NSManagedObject, you can remove a record by its index or by the object itself. Just call the ```remove()``` function.
+Since the data you have is given as an array of an NSManagedObject, you can remove a record by its index or by the object itself. Just call the ```delete()``` function.
 
-Remove by index
+Delete by index
 ```swift
-self.coreData.remove(0)
+self.coreData.delete(0)
 ```
 
-Remove by NSManagedObject
+Delete by NSManagedObject
 ```swift
 let objectToRemove = self.coreData.getData()[0]
-self.coreData.remove(objectToRemove)
+self.coreData.delete(objectToRemove)
 ```
 
 
