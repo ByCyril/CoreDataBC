@@ -1,0 +1,16 @@
+PODS:
+  - CoreDataBC (1.1)
+
+DEPENDENCIES:
+  - CoreDataBC
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - CoreDataBC
+
+SPEC CHECKSUMS:
+  CoreDataBC: 8ab59ece180f7778a3fd8b0f993b859ff38a2e99
+
+PODFILE CHECKSUM: 1194dd5c820b0afe33fac2daabbc5b8efddcb6f9
+
+COCOAPODS: 1.5.3

@@ -1,0 +1,6 @@
+framework module CoreDataBC {
+  umbrella header "CoreDataBC-umbrella.h"
+
+  export *
+  module * { export * }
+}
