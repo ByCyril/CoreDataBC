@@ -43,6 +43,8 @@ pod 'CoreDataBC'
 2) Create an instance of the CoreDataBC Module
     `private let coreData = CoreDataBC(entity: "<Entity Name>", xcDataModelID: "<Name of your xcDataModelID>")`
 
+### Prerequisites
+Make sure you have your Data Model and youe Entities all setup before proceeding. 
 
 ### Saving Data - Single Entry
 To save one entry, create a dictionary of the items you want to save. In this case, I am trying to add my contact info.
