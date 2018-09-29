@@ -31,7 +31,7 @@ Download the repository and drag to your project files
 
 
 ## Installation with Cocoapods
-Installing SwiftyCoreData is as simple as
+Installing CoreDataBC is as simple as
 ```
 pod 'CoreDataBC'
 ```
@@ -110,5 +110,5 @@ let objectToRemove = self.coreData.getData()[0]
 self.coreData.delete(objectToRemove)
 ```
 
-
+### Developed by Cyril
 
