@@ -1,4 +1,4 @@
-# CoreDataBC
+# CoreDataBC (Deprecated)
 
 ## Overview
 CoreDataBC is a high level framework that is built on top of CoreData. It's purpose is to make it easy for developers to interact with their Data Models.
